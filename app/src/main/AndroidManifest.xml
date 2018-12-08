@@ -1,0 +1,23 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.banasiak.android.openvpntile">
+
+  <application
+    android:allowBackup="true"
+    android:label="@string/app_name"
+    android:supportsRtl="true"
+    tools:ignore="AllowBackup,GoogleAppIndexingWarning,MissingApplicationIcon">
+
+    <service
+      android:name=".QuickSettingsService"
+      android:icon="@drawable/ic_icon"
+      android:label="@string/tile_name"
+      android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+      <intent-filter>
+        <action android:name="android.service.quicksettings.action.QS_TILE"/>
+      </intent-filter>
+    </service>
+
+  </application>
+
+</manifest>
