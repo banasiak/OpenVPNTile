@@ -4,12 +4,12 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatDialogFragment
 
 class VpnProfileDialog : AppCompatDialogFragment() {
   interface DialogListener {
@@ -18,16 +18,17 @@ class VpnProfileDialog : AppCompatDialogFragment() {
   }
 
   private lateinit var _context: Context
-  private lateinit var _listener: DialogListener
+  private lateinit var listener: DialogListener
   private lateinit var dialogView: View
 
   fun initialize(context: Context, listener: DialogListener) {
     this._context = context
-    this._listener = listener
+    this.listener = listener
   }
 
+
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    if (!::_context.isInitialized || !::_listener.isInitialized) {
+    if (!::_context.isInitialized || !::listener.isInitialized) {
       throw IllegalStateException("QuickSettingsDialog not properly initialized!")
     }
 
@@ -39,10 +40,10 @@ class VpnProfileDialog : AppCompatDialogFragment() {
     alertBuilder.setView(dialogView)
     alertBuilder.setTitle(R.string.app_name)
     alertBuilder.setPositiveButton(android.R.string.ok) { _, _ ->
-      _listener.onPositiveClick(getProfileValues())
+      listener.onPositiveClick(getProfileValues())
     }
     alertBuilder.setNegativeButton(android.R.string.cancel) { _, _ ->
-      _listener.onNegativeClick()
+      listener.onNegativeClick()
     }
     return alertBuilder.create()
   }
