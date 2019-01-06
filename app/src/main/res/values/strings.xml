@@ -1,4 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">OpenVPN Quick Tile</string>
   <string name="tile_name">OpenVPN</string>
+  <string name="profile_name">Profile Name</string>
+  <string name="profile_type">Profile Type</string>
+  <string-array name="vpn_type">
+    <item>OVPN Profile</item>
+    <item>Access Server</item>
+  </string-array>
+  <string-array name="vpn_type_prefix">
+    <item>PC</item>
+    <item>AS</item>
+  </string-array>
+  <string name="instructions">Enter a profile name exactly as defined in the OpenVPN Connect app and
+    choose the associated profile type.</string>
 </resources>

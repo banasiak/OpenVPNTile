@@ -14,18 +14,19 @@ class QuickSettingsService : TileService() {
     const val OPENVPN_ACTIVITY = "net.openvpn.unified.MainActivity"
     const val VPN_PROFILE_KEY = "vpn_profile"
     const val VPN_TYPE_KEY = "vpn_type"
-    const val DEFAULT_VPN_PROFILE = "vpn.cyberguyenterprises.com"
   }
 
   private lateinit var prefs: SharedPreferences
-
   private var vpnProfile: String
-    get() = prefs.getString(VPN_PROFILE_KEY, DEFAULT_VPN_PROFILE)!!
-    set(value) { prefs.edit().putString(VPN_PROFILE_KEY, value).apply() }
+    get() = prefs.getString(VPN_PROFILE_KEY, "")!!
+    set(value) {
+      prefs.edit().putString(VPN_PROFILE_KEY, value).apply()
+    }
   private var vpnType: String
-    get() = prefs.getString(VPN_TYPE_KEY, "PC")!! // could also be "AS"
-    set(value) { prefs.edit().putString(VPN_TYPE_KEY, value).apply() }
-
+    get() = prefs.getString(VPN_TYPE_KEY, "")!!
+    set(value) {
+      prefs.edit().putString(VPN_TYPE_KEY, value).apply()
+    }
 
   override fun onBind(intent: Intent?): IBinder? {
     prefs = applicationContext
@@ -49,15 +50,14 @@ class QuickSettingsService : TileService() {
       return
     }
 
-    //TODO -> check to see if the VPN profile has been defined
-    //promptForVpnProfile()
-
-    when (qsTile.state) {
-      Tile.STATE_INACTIVE -> connect()
-      Tile.STATE_ACTIVE -> disconnect()
+    if (vpnProfile.isEmpty() || vpnType.isEmpty()) {
+      promptForVpnProfile()
+    } else {
+      when (qsTile.state) {
+        Tile.STATE_INACTIVE -> connect()
+        Tile.STATE_ACTIVE -> disconnect()
+      }
     }
-
-    qsTile.updateTile()
   }
 
   private fun promptForVpnProfile() {
@@ -68,8 +68,10 @@ class QuickSettingsService : TileService() {
 
   private fun createProfileDialogListener(): VpnProfileDialog.DialogListener {
     return object : VpnProfileDialog.DialogListener {
-      override fun onPositiveClick() {
-        //TODO -> persist vpn profile name
+      override fun onPositiveClick(values: Pair<String, String>) {
+        vpnProfile = values.first
+        vpnType = values.second
+        connect()
       }
       override fun onNegativeClick() {
         // no-op
@@ -81,8 +83,11 @@ class QuickSettingsService : TileService() {
     prefs.edit().clear().apply()
   }
 
+  // These intents are constructed using parameters documented here:
+  // https://openvpn.net/vpn-server-resources/faq-regarding-openvpn-connect-android/#How_do_I_use_tasker_with_OpenVPN_Connect_for_Android
   private fun connect() {
     qsTile.state = Tile.STATE_ACTIVE
+    qsTile.updateTile()
     val intent = Intent(Intent.ACTION_VIEW)
     intent.component = ComponentName(OPENVPN_PACKAGE, OPENVPN_ACTIVITY)
     intent.putExtra("$OPENVPN_PACKAGE.AUTOSTART_PROFILE_NAME", "$vpnType $vpnProfile")
@@ -94,6 +99,7 @@ class QuickSettingsService : TileService() {
 
   private fun disconnect() {
     qsTile.state = Tile.STATE_INACTIVE
+    qsTile.updateTile()
     val intent = Intent("$OPENVPN_PACKAGE.DISCONNECT")
     intent.component = ComponentName(OPENVPN_PACKAGE, OPENVPN_ACTIVITY)
     intent.putExtra("$OPENVPN_PACKAGE.STOP", true)

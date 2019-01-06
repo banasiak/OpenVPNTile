@@ -1,15 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:layout_margin="8dp"
+  android:orientation="vertical"
+  android:padding="16dp"
+  android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
   <TextView
+    android:id="@+id/instructions"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:textSize="24sp"
-    android:text="Quick Settings Dialog"/>
+    android:layout_marginEnd="12dp"
+    android:layout_marginStart="12dp"
+    android:text="@string/instructions"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    style="@style/TextAppearance.MaterialComponents.Body2"/>
 
-</LinearLayout>
+  <android.support.design.widget.TextInputLayout
+    android:id="@+id/profileNameLayout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/instructions">
+
+    <android.support.design.widget.TextInputEditText
+      android:id="@+id/profileName"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/profile_name"
+      android:inputType="textNoSuggestions"
+      style="@style/TextAppearance.MaterialComponents.Body1"/>
+
+  </android.support.design.widget.TextInputLayout>
+
+  <Spinner
+    android:id="@+id/profileType"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/profileNameLayout"
+    style="@style/TextAppearance.MaterialComponents.Body1"/>
+
+</android.support.constraint.ConstraintLayout>
