@@ -8,6 +8,14 @@
     android:supportsRtl="true"
     tools:ignore="AllowBackup,GoogleAppIndexingWarning,MissingApplicationIcon">
 
+    <activity
+      android:name=".LongPressActivity"
+      android:theme="@android:style/Theme.Translucent.NoTitleBar">
+      <intent-filter>
+        <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES"/>
+      </intent-filter>
+    </activity>
+
     <service
       android:name=".QuickSettingsService"
       android:icon="@drawable/ic_icon"

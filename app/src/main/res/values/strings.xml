@@ -13,5 +13,6 @@
     <item>AS</item>
   </string-array>
   <string name="instructions">Enter a profile name exactly as defined in the OpenVPN Connect app and
-    choose the associated profile type.</string>
+    choose the associated profile type.\n\nRemove and re-add the quick tile to reset these
+    settings. Long press the tile to launch OpenVPN Connect.</string>
 </resources>
