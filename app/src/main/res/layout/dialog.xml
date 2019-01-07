@@ -10,24 +10,37 @@
   android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
   <TextView
-    android:id="@+id/instructions"
+    android:id="@+id/title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
     android:layout_marginStart="16dp"
-    android:text="@string/instructions"
+    android:layout_marginEnd="16dp"
+    android:text="@string/app_name"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    style="@style/TextAppearance.MaterialComponents.Headline6"/>
+
+  <TextView
+    android:id="@+id/instructions"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp"
+    android:text="@string/instructions"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/title"
     style="@style/TextAppearance.MaterialComponents.Body2"/>
 
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/profileNameLayout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="12dp"
     android:layout_marginStart="12dp"
     android:layout_marginTop="16dp"
+    android:layout_marginEnd="12dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/instructions">

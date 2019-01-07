@@ -38,7 +38,6 @@ class VpnProfileDialog : AppCompatDialogFragment() {
     dialogView.findViewById<Spinner>(R.id.profileType).adapter = adapter
     val alertBuilder = AlertDialog.Builder(_context)
     alertBuilder.setView(dialogView)
-    alertBuilder.setTitle(R.string.app_name)
     alertBuilder.setPositiveButton(android.R.string.ok) { _, _ ->
       listener.onPositiveClick(getProfileValues())
     }
