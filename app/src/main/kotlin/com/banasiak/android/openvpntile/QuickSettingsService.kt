@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.IBinder
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import android.widget.Toast
 
 class QuickSettingsService : TileService() {
   companion object {
@@ -14,23 +15,24 @@ class QuickSettingsService : TileService() {
     const val OPENVPN_ACTIVITY = "net.openvpn.unified.MainActivity"
     const val VPN_PROFILE_KEY = "vpn_profile"
     const val VPN_TYPE_KEY = "vpn_type"
+    const val EMPTY_STRING = ""
   }
 
   private lateinit var prefs: SharedPreferences
   private var vpnProfile: String
-    get() = prefs.getString(VPN_PROFILE_KEY, "")!!
+    get() = prefs.getString(VPN_PROFILE_KEY, EMPTY_STRING)!!
     set(value) {
       prefs.edit().putString(VPN_PROFILE_KEY, value).apply()
     }
   private var vpnType: String
-    get() = prefs.getString(VPN_TYPE_KEY, "")!!
+    get() = prefs.getString(VPN_TYPE_KEY, EMPTY_STRING)!!
     set(value) {
       prefs.edit().putString(VPN_TYPE_KEY, value).apply()
     }
 
   override fun onBind(intent: Intent?): IBinder? {
     prefs = applicationContext
-        .getSharedPreferences(applicationContext.packageName, Context.MODE_PRIVATE)
+      .getSharedPreferences(applicationContext.packageName, Context.MODE_PRIVATE)
     return super.onBind(intent)
   }
 
@@ -50,14 +52,27 @@ class QuickSettingsService : TileService() {
       return
     }
 
+    // redirect user to store if OpenVPN Connect isn't installed
+    if (!isOpenVpnConnectInstalled(applicationContext)) {
+      Toast.makeText(applicationContext, R.string.openvpn_not_installed, Toast.LENGTH_LONG).show()
+      startActivityAndCollapse(getOpenVpnLaunchIntent(applicationContext))
+      return
+    }
+
+    // if a profile hasn't been configured, prompt the user to do it now
     if (vpnProfile.isEmpty() || vpnType.isEmpty()) {
       promptForVpnProfile()
-    } else {
-      when (qsTile.state) {
-        Tile.STATE_INACTIVE -> connect()
-        Tile.STATE_ACTIVE -> disconnect()
-      }
+      return
     }
+
+    // otherwise, connect or disconnect based on the tile's current state...
+    // clearly this isn't ideal, because the VPN can be connected/disconnected via other means, but
+    // since the app doesn't have any notification mechanism (AFAIK) it's the best we can do
+    when (qsTile.state) {
+      Tile.STATE_INACTIVE -> connect()
+      Tile.STATE_ACTIVE -> disconnect()
+    }
+
   }
 
   private fun promptForVpnProfile() {

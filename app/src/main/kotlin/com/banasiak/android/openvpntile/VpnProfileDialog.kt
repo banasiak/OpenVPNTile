@@ -1,5 +1,6 @@
 package com.banasiak.android.openvpntile
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -27,6 +28,7 @@ class VpnProfileDialog : AppCompatDialogFragment() {
   }
 
 
+  @SuppressLint("InflateParams")
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     if (!::_context.isInitialized || !::listener.isInitialized) {
       throw IllegalStateException("QuickSettingsDialog not properly initialized!")
@@ -36,6 +38,7 @@ class VpnProfileDialog : AppCompatDialogFragment() {
     val adapter = ArrayAdapter<String>(_context, android.R.layout.simple_spinner_dropdown_item,
         _context.resources.getStringArray(R.array.vpn_type))
     dialogView.findViewById<Spinner>(R.id.profileType).adapter = adapter
+
     val alertBuilder = AlertDialog.Builder(_context)
     alertBuilder.setView(dialogView)
     alertBuilder.setPositiveButton(android.R.string.ok) { _, _ ->
@@ -44,14 +47,15 @@ class VpnProfileDialog : AppCompatDialogFragment() {
     alertBuilder.setNegativeButton(android.R.string.cancel) { _, _ ->
       listener.onNegativeClick()
     }
+
     return alertBuilder.create()
   }
 
   private fun getProfileValues(): Pair<String, String> {
     val profileName = dialogView.findViewById<EditText>(R.id.profileName).text.toString()
     val profileTypes = _context.resources.getStringArray(R.array.vpn_type_prefix)
-    val profileType = profileTypes[dialogView.findViewById<Spinner>(R.id.profileType)
-        .selectedItemPosition]
+    val profileType =
+      profileTypes[dialogView.findViewById<Spinner>(R.id.profileType).selectedItemPosition]
     return Pair(profileName, profileType)
   }
 
