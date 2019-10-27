@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+    <item name="colorPrimary">@color/primaryColor</item>
+    <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+    <item name="colorOnPrimary">@color/primaryTextColor</item>
+    <item name="colorSecondary">@color/primaryColor</item>
+    <item name="colorSecondaryVariant">@color/primaryLightColor</item>
+    <item name="colorOnSecondary">@color/secondaryTextColor</item>
+  </style>
+</resources>

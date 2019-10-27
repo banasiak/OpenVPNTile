@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.appcompat.view.ContextThemeWrapper
 
 class VpnProfileDialog : AppCompatDialogFragment() {
   interface DialogListener {
@@ -23,15 +24,14 @@ class VpnProfileDialog : AppCompatDialogFragment() {
   private lateinit var dialogView: View
 
   fun initialize(context: Context, listener: DialogListener) {
-    this._context = context
+    this._context = ContextThemeWrapper(context, R.style.AppTheme)
     this.listener = listener
   }
 
-
   @SuppressLint("InflateParams")
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    if (!::_context.isInitialized || !::listener.isInitialized) {
-      throw IllegalStateException("QuickSettingsDialog not properly initialized!")
+    check(::_context.isInitialized && ::listener.isInitialized) {
+      "QuickSettingsDialog not properly initialized!"
     }
 
     dialogView = LayoutInflater.from(_context).inflate(R.layout.dialog, null)
